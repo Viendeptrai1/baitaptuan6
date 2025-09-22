@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>Trang Chủ - Hệ Thống Quản Lý Video</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="row">
+            <div class="col-12">
+                <div class="jumbotron bg-primary text-white rounded p-5 mb-4">
+                    <h1 class="display-4">
+                        <i class="fas fa-video me-3"></i>
+                        Chào Mừng Đến Với Hệ Thống Quản Lý Video
+                    </h1>
+                    <p class="lead">Quản lý danh mục, người dùng và video một cách hiệu quả với giao diện thân thiện</p>
+                    <hr class="my-4">
+                    <p>Hệ thống được phát triển bằng Spring Boot với đầy đủ tính năng CRUD và tìm kiếm phân trang</p>
+                    <a class="btn btn-light btn-lg" href="/admin" role="button">
+                        <i class="fas fa-tachometer-alt me-2"></i>
+                        Vào Trang Quản Trị
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-tags fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">Danh Mục</h5>
+                        <h2 class="text-primary" th:text="${categoryCount}">0</h2>
+                        <p class="card-text">Tổng số danh mục đang hoạt động</p>
+                        <a href="/admin/categories" class="btn btn-primary">
+                            <i class="fas fa-eye me-1"></i>
+                            Xem Chi Tiết
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-users fa-3x text-success mb-3"></i>
+                        <h5 class="card-title">Người Dùng</h5>
+                        <h2 class="text-success" th:text="${userCount}">0</h2>
+                        <p class="card-text">Tổng số người dùng đang hoạt động</p>
+                        <a href="/admin/users" class="btn btn-success">
+                            <i class="fas fa-eye me-1"></i>
+                            Xem Chi Tiết
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-video fa-3x text-warning mb-3"></i>
+                        <h5 class="card-title">Video</h5>
+                        <h2 class="text-warning" th:text="${videoCount}">0</h2>
+                        <p class="card-text">Tổng số video đang hoạt động</p>
+                        <a href="/admin/videos" class="btn btn-warning">
+                            <i class="fas fa-eye me-1"></i>
+                            Xem Chi Tiết
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Thông Tin Dự Án
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-code me-2"></i>Công Nghệ Sử Dụng</h6>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success me-2"></i>Spring Boot 3.5.6</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Spring Data JPA</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Thymeleaf + Bootstrap 5</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>PostgreSQL</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Docker</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-star me-2"></i>Tính Năng Chính</h6>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success me-2"></i>CRUD đầy đủ cho 3 bảng</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Tìm kiếm và phân trang</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Soft Delete</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Phân quyền Admin</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Giao diện responsive</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

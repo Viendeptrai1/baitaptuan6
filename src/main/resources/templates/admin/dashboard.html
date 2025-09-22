@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>Admin Dashboard - Hệ Thống Quản Lý Video</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">
+                        <i class="fas fa-tachometer-alt me-2"></i>
+                        Admin Dashboard
+                    </h1>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="row mb-4">
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Tổng Danh Mục
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${categoryCount}">0</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-tags fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Tổng Người Dùng
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${userCount}">0</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-users fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    Tổng Video
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${videoCount}">0</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-video fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    Tổng Hoạt Động
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${categoryCount + userCount + videoCount}">0</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-chart-line fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            <i class="fas fa-bolt me-2"></i>
+                            Thao Tác Nhanh
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-tags fa-3x text-primary mb-3"></i>
+                                        <h5 class="card-title">Quản Lý Danh Mục</h5>
+                                        <p class="card-text">Thêm, sửa, xóa danh mục video</p>
+                                        <a href="/admin/categories" class="btn btn-primary">
+                                            <i class="fas fa-arrow-right me-1"></i>
+                                            Quản Lý
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-users fa-3x text-success mb-3"></i>
+                                        <h5 class="card-title">Quản Lý Người Dùng</h5>
+                                        <p class="card-text">Quản lý tài khoản và phân quyền</p>
+                                        <a href="/admin/users" class="btn btn-success">
+                                            <i class="fas fa-arrow-right me-1"></i>
+                                            Quản Lý
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-video fa-3x text-warning mb-3"></i>
+                                        <h5 class="card-title">Quản Lý Video</h5>
+                                        <p class="card-text">Thêm, sửa, xóa video</p>
+                                        <a href="/admin/videos" class="btn btn-warning">
+                                            <i class="fas fa-arrow-right me-1"></i>
+                                            Quản Lý
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Thông Tin Hệ Thống
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center">
+                            <img src="https://via.placeholder.com/100x100/007bff/ffffff?text=AV" 
+                                 alt="Avatar" class="rounded-circle mb-3" style="width: 100px; height: 100px;">
+                            <h5>Phan Quốc Viễn</h5>
+                            <p class="text-muted">MSSV: 23110362</p>
+                        </div>
+                        <hr>
+                        <div class="mb-3">
+                            <h6><i class="fas fa-code me-2"></i>Công Nghệ</h6>
+                            <ul class="list-unstyled small">
+                                <li><i class="fas fa-check text-success me-1"></i>Spring Boot 3.5.6</li>
+                                <li><i class="fas fa-check text-success me-1"></i>Spring Data JPA</li>
+                                <li><i class="fas fa-check text-success me-1"></i>Thymeleaf</li>
+                                <li><i class="fas fa-check text-success me-1"></i>Bootstrap 5</li>
+                                <li><i class="fas fa-check text-success me-1"></i>PostgreSQL</li>
+                            </ul>
+                        </div>
+                        <div class="mb-3">
+                            <h6><i class="fas fa-star me-2"></i>Tính Năng</h6>
+                            <ul class="list-unstyled small">
+                                <li><i class="fas fa-check text-success me-1"></i>CRUD đầy đủ</li>
+                                <li><i class="fas fa-check text-success me-1"></i>Tìm kiếm & Phân trang</li>
+                                <li><i class="fas fa-check text-success me-1"></i>Soft Delete</li>
+                                <li><i class="fas fa-check text-success me-1"></i>Responsive UI</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .border-left-primary {
+            border-left: 0.25rem solid #4e73df !important;
+        }
+        .border-left-success {
+            border-left: 0.25rem solid #1cc88a !important;
+        }
+        .border-left-info {
+            border-left: 0.25rem solid #36b9cc !important;
+        }
+        .border-left-warning {
+            border-left: 0.25rem solid #f6c23e !important;
+        }
+        .text-xs {
+            font-size: 0.7rem;
+        }
+        .text-gray-300 {
+            color: #dddfeb !important;
+        }
+        .text-gray-800 {
+            color: #5a5c69 !important;
+        }
+    </style>
+</body>
+</html>

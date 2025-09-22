@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>Quản Lý Người Dùng - Admin</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">
+                <i class="fas fa-users me-2"></i>
+                Quản Lý Người Dùng
+            </h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <a href="/admin/users/new" class="btn btn-primary">
+                    <i class="fas fa-plus me-1"></i>
+                    Thêm Người Dùng
+                </a>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <form method="get" th:action="@{/admin/users}">
+                    <div class="row g-2">
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                <input type="text" class="form-control" name="keyword" th:value="${keyword}" placeholder="Tìm username, email, họ tên...">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <select name="role" class="form-select">
+                                <option value="">Tất cả vai trò</option>
+                                <option th:each="r : ${roles}" th:value="${r}" th:text="${r}"></option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select name="size" class="form-select">
+                                <option th:value="5">5</option>
+                                <option th:value="10" selected>10</option>
+                                <option th:value="20">20</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select name="sortBy" class="form-select">
+                                <option value="username">Username</option>
+                                <option value="createdAt">Ngày tạo</option>
+                            </select>
+                        </div>
+                        <div class="col-md-1">
+                            <button type="submit" class="btn btn-outline-primary w-100">
+                                Lọc
+                            </button>
+                        </div>
+                    </div>
+                    <input type="hidden" name="page" value="0">
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h6 class="m-0"><i class="fas fa-list me-2"></i>Danh sách người dùng</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Họ tên</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="u : ${users.content}" th:class="${u.isActive} ? '' : 'table-secondary'">
+                                <td th:text="${u.id}">1</td>
+                                <td th:text="${u.username}">username</td>
+                                <td th:text="${u.fullName}">Họ tên</td>
+                                <td th:text="${u.email}">email</td>
+                                <td><span class="badge bg-info" th:text="${u.role}">USER</span></td>
+                                <td>
+                                    <span th:if="${u.isActive}" class="badge bg-success">Hoạt động</span>
+                                    <span th:unless="${u.isActive}" class="badge bg-secondary">Khóa</span>
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a th:href="@{/admin/users/{id}(id=${u.id})}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>
+                                        <a th:href="@{/admin/users/{id}/edit(id=${u.id})}" class="btn btn-sm btn-outline-warning"><i class="fas fa-edit"></i></a>
+                                        <form th:action="@{/admin/users/{id}/toggle(id=${u.id})}" method="post" class="d-inline">
+                                            <button type="submit" class="btn btn-sm btn-outline-secondary"><i class="fas fa-toggle-on"></i></button>
+                                        </form>
+                                        <a th:href="@{/admin/users/{id}/delete(id=${u.id})}" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(users.content)}">
+                                <td colspan="7" class="text-center text-muted py-4">Không có người dùng</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <nav th:if="${totalPages > 1}">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                            <a class="page-link" th:href="@{/admin/users(page=${currentPage - 1}, size=${size}, sortBy=${sortBy}, sortDir=${sortDir}, keyword=${keyword})}">&laquo;</a>
+                        </li>
+                        <li class="page-item" th:each="p : ${#numbers.sequence(0, totalPages-1)}" th:classappend="${p == currentPage} ? 'active'">
+                            <a class="page-link" th:text="${p+1}" th:href="@{/admin/users(page=${p}, size=${size}, sortBy=${sortBy}, sortDir=${sortDir}, keyword=${keyword})}">1</a>
+                        </li>
+                        <li class="page-item" th:classappend="${currentPage == totalPages-1} ? 'disabled'">
+                            <a class="page-link" th:href="@{/admin/users(page=${currentPage + 1}, size=${size}, sortBy=${sortBy}, sortDir=${sortDir}, keyword=${keyword})}">&raquo;</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>Chi Tiết Người Dùng - Admin</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">
+            <i class="fas fa-user me-2"></i>
+            Chi Tiết Người Dùng
+        </h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <a href="/admin/users" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-1"></i>Quay Lại</a>
+            <a th:href="@{/admin/users/{id}/edit(id=${user.id})}" class="btn btn-warning ms-2"><i class="fas fa-edit me-1"></i>Sửa</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="m-0"><i class="fas fa-id-card me-2"></i>Thông Tin</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3"><label class="form-label fw-bold">ID:</label><p class="form-control-plaintext" th:text="${user.id}">1</p></div>
+                            <div class="mb-3"><label class="form-label fw-bold">Username:</label><p class="form-control-plaintext" th:text="${user.username}">user</p></div>
+                            <div class="mb-3"><label class="form-label fw-bold">Email:</label><p class="form-control-plaintext" th:text="${user.email}">email</p></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3"><label class="form-label fw-bold">Họ tên:</label><p class="form-control-plaintext" th:text="${user.fullName}">Họ tên</p></div>
+                            <div class="mb-3"><label class="form-label fw-bold">Vai trò:</label><p class="form-control-plaintext"><span class="badge bg-info" th:text="${user.role}">USER</span></p></div>
+                            <div class="mb-3"><label class="form-label fw-bold">Trạng thái:</label>
+                                <p>
+                                    <span th:if="${user.isActive}" class="badge bg-success">Hoạt động</span>
+                                    <span th:unless="${user.isActive}" class="badge bg-secondary">Khóa</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Ngày tạo:</label>
+                        <p class="form-control-plaintext" th:text="${#temporals.format(user.createdAt, 'dd/MM/yyyy HH:mm')}">01/01/2024 10:00</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Cập nhật:</label>
+                        <p class="form-control-plaintext" th:text="${#temporals.format(user.updatedAt, 'dd/MM/yyyy HH:mm')}">01/01/2024 10:00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="m-0"><i class="fas fa-cogs me-2"></i>Thao tác</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a th:href="@{/admin/users/{id}/edit(id=${user.id})}" class="btn btn-warning"><i class="fas fa-edit me-1"></i>Chỉnh Sửa</a>
+                        <form th:action="@{/admin/users/{id}/toggle(id=${user.id})}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-outline-secondary w-100"><i class="fas fa-toggle-on me-1"></i>Bật/Tắt</button>
+                        </form>
+                        <a th:href="@{/admin/users/{id}/delete(id=${user.id})}" class="btn btn-outline-danger"><i class="fas fa-trash me-1"></i>Xóa</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

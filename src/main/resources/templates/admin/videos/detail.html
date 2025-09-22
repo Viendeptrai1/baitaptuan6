@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>Chi Tiết Video - Admin</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2"><i class="fas fa-video me-2"></i>Chi Tiết Video</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <a href="/admin/videos" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-1"></i>Quay Lại</a>
+            <a th:href="@{/admin/videos/{id}/edit(id=${video.id})}" class="btn btn-warning ms-2"><i class="fas fa-edit me-1"></i>Sửa</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header"><h6 class="m-0"><i class="fas fa-info-circle me-2"></i>Thông Tin</h6></div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3"><label class="form-label fw-bold">ID:</label><p class="form-control-plaintext" th:text="${video.id}">1</p></div>
+                            <div class="mb-3"><label class="form-label fw-bold">Tiêu đề:</label><p class="form-control-plaintext" th:text="${video.title}">title</p></div>
+                            <div class="mb-3"><label class="form-label fw-bold">Danh mục:</label><p class="form-control-plaintext" th:text="${video.category.name}">cat</p></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3"><label class="form-label fw-bold">Người tạo:</label><p class="form-control-plaintext" th:text="${video.user.fullName}">user</p></div>
+                            <div class="mb-3"><label class="form-label fw-bold">Trạng thái:</label>
+                                <p>
+                                    <span th:if="${video.isActive}" class="badge bg-success">Hoạt động</span>
+                                    <span th:unless="${video.isActive}" class="badge bg-secondary">Ẩn</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3"><label class="form-label fw-bold">Mô tả:</label>
+                        <div class="border rounded p-3 bg-light"><p class="mb-0" th:text="${video.description}">desc</p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4"><label class="form-label fw-bold">URL:</label><p class="form-control-plaintext" th:text="${video.url}">url</p></div>
+                        <div class="col-md-4"><label class="form-label fw-bold">Views:</label><p class="form-control-plaintext" th:text="${video.views}">0</p></div>
+                        <div class="col-md-4"><label class="form-label fw-bold">Likes:</label><p class="form-control-plaintext" th:text="${video.likes}">0</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header"><h6 class="m-0"><i class="fas fa-cogs me-2"></i>Thao tác</h6></div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a th:href="@{/admin/videos/{id}/edit(id=${video.id})}" class="btn btn-warning"><i class="fas fa-edit me-1"></i>Chỉnh Sửa</a>
+                        <form th:action="@{/admin/videos/{id}/toggle(id=${video.id})}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-outline-secondary w-100"><i class="fas fa-toggle-on me-1"></i>Bật/Tắt</button>
+                        </form>
+                        <form th:action="@{/admin/videos/{id}/increment-views(id=${video.id})}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-outline-primary w-100"><i class="fas fa-eye me-1"></i>Tăng View</button>
+                        </form>
+                        <form th:action="@{/admin/videos/{id}/increment-likes(id=${video.id})}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-outline-success w-100"><i class="fas fa-thumbs-up me-1"></i>Tăng Like</button>
+                        </form>
+                        <a th:href="@{/admin/videos/{id}/delete(id=${video.id})}" class="btn btn-outline-danger"><i class="fas fa-trash me-1"></i>Xóa</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title th:text="${user.id != null} ? 'Chỉnh Sửa Người Dùng' : 'Thêm Người Dùng'">Thêm Người Dùng</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">
+            <i class="fas fa-user me-2"></i>
+            <span th:text="${user.id != null} ? 'Chỉnh Sửa Người Dùng' : 'Thêm Người Dùng'">Thêm Người Dùng</span>
+        </h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <a href="/admin/users" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-1"></i>
+                Quay Lại
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="m-0"><i class="fas fa-id-card me-2"></i>Thông Tin Người Dùng</h6>
+                </div>
+                <div class="card-body">
+                    <form th:action="${user.id != null} ? @{/admin/users/{id}(id=${user.id})} : @{/admin/users}" th:object="${user}" method="post">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Username</label>
+                                <input type="text" th:field="*{username}" class="form-control" required>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Lỗi</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email</label>
+                                <input type="email" th:field="*{email}" class="form-control" required>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Lỗi</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Mật khẩu</label>
+                                <input type="password" th:field="*{password}" class="form-control" th:placeholder="${user.id != null} ? 'Để trống nếu không đổi' : ''" th:required="${user.id == null}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Họ tên</label>
+                                <input type="text" th:field="*{fullName}" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Vai trò</label>
+                                <select th:field="*{role}" class="form-select">
+                                    <option th:each="r : ${roles}" th:value="${r}" th:text="${r}"></option>
+                                </select>
+                            </div>
+                            <div class="col-md-6" th:if="${user.id != null}">
+                                <div class="form-check mt-4">
+                                    <input class="form-check-input" type="checkbox" th:field="*{isActive}" id="isActive">
+                                    <label class="form-check-label" for="isActive">Hoạt động</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between mt-3">
+                            <a href="/admin/users" class="btn btn-secondary">Hủy</a>
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="m-0"><i class="fas fa-info-circle me-2"></i>Gợi ý</h6>
+                </div>
+                <div class="card-body small text-muted">
+                    - Username và Email phải là duy nhất.
+                    <br> - Mật khẩu tối thiểu 6 ký tự.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

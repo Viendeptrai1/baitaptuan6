@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title th:text="${video.id != null} ? 'Chỉnh Sửa Video' : 'Thêm Video'">Thêm Video</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2"><i class="fas fa-video me-2"></i><span th:text="${video.id != null} ? 'Chỉnh Sửa Video' : 'Thêm Video'">Thêm Video</span></h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <a href="/admin/videos" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-1"></i>Quay Lại</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header"><h6 class="m-0"><i class="fas fa-edit me-2"></i>Thông Tin Video</h6></div>
+                <div class="card-body">
+                    <form th:action="${video.id != null} ? @{/admin/videos/{id}(id=${video.id})} : @{/admin/videos}" th:object="${video}" method="post">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Tiêu đề</label>
+                                <input type="text" th:field="*{title}" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">URL</label>
+                                <input type="text" th:field="*{url}" class="form-control" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Mô tả</label>
+                                <textarea th:field="*{description}" class="form-control" rows="4"></textarea>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Thời lượng (giây)</label>
+                                <input type="number" th:field="*{duration}" class="form-control" min="0">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Danh mục</label>
+                                <select th:field="*{category}" class="form-select" required>
+                                    <option th:each="c : ${categories}" th:value="${c}" th:text="${c.name}"></option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Người tạo</label>
+                                <select th:field="*{user}" class="form-select" required>
+                                    <option th:each="u : ${users}" th:value="${u}" th:text="${u.fullName}"></option>
+                                </select>
+                            </div>
+                            <div class="col-12" th:if="${video.id != null}">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" th:field="*{isActive}" id="isActive">
+                                    <label class="form-check-label" for="isActive">Hoạt động</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between mt-3">
+                            <a href="/admin/videos" class="btn btn-secondary">Hủy</a>
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header"><h6 class="m-0"><i class="fas fa-info-circle me-2"></i>Gợi ý</h6></div>
+                <div class="card-body small text-muted">Điền đủ tiêu đề, URL, danh mục và người tạo.</div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

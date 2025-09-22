@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>Chi Tiết Danh Mục - Admin</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">
+                <i class="fas fa-tags me-2"></i>
+                Chi Tiết Danh Mục
+            </h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <a href="/admin/categories" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-1"></i>
+                    Quay Lại
+                </a>
+                <a th:href="@{/admin/categories/{id}/edit(id=${category.id})}" class="btn btn-warning ms-2">
+                    <i class="fas fa-edit me-1"></i>
+                    Chỉnh Sửa
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Thông Tin Chi Tiết
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">ID:</label>
+                                    <p class="form-control-plaintext" th:text="${category.id}">1</p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Tên Danh Mục:</label>
+                                    <p class="form-control-plaintext" th:text="${category.name}">Tên danh mục</p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Trạng Thái:</label>
+                                    <p>
+                                        <span th:if="${category.isActive}" class="badge bg-success">
+                                            <i class="fas fa-check me-1"></i>
+                                            Hoạt động
+                                        </span>
+                                        <span th:unless="${category.isActive}" class="badge bg-secondary">
+                                            <i class="fas fa-times me-1"></i>
+                                            Không hoạt động
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Ngày Tạo:</label>
+                                    <p class="form-control-plaintext" th:text="${#temporals.format(category.createdAt, 'dd/MM/yyyy HH:mm:ss')}">01/01/2024 10:00:00</p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Ngày Cập Nhật:</label>
+                                    <p class="form-control-plaintext" th:text="${#temporals.format(category.updatedAt, 'dd/MM/yyyy HH:mm:ss')}">01/01/2024 10:00:00</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Mô Tả:</label>
+                            <div class="border rounded p-3 bg-light">
+                                <p th:text="${category.description ?: 'Không có mô tả'}" class="mb-0">Mô tả danh mục</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Videos in this category -->
+                <div class="card mt-4" th:if="${category.videos != null and !category.videos.isEmpty()}">
+                    <div class="card-header">
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            <i class="fas fa-video me-2"></i>
+                            Video Trong Danh Mục
+                            <span class="badge bg-primary ms-2" th:text="${#lists.size(category.videos)}">0</span>
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Tiêu Đề</th>
+                                        <th>Người Tạo</th>
+                                        <th>Ngày Tạo</th>
+                                        <th>Trạng Thái</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="video : ${category.videos}">
+                                        <td th:text="${video.id}">1</td>
+                                        <td>
+                                            <a th:href="@{/admin/videos/{id}(id=${video.id})}" 
+                                               th:text="${video.title}" class="text-decoration-none">Tiêu đề video</a>
+                                        </td>
+                                        <td th:text="${video.user.fullName}">Người tạo</td>
+                                        <td th:text="${#temporals.format(video.createdAt, 'dd/MM/yyyy')}">01/01/2024</td>
+                                        <td>
+                                            <span th:if="${video.isActive}" class="badge bg-success">Hoạt động</span>
+                                            <span th:unless="${video.isActive}" class="badge bg-secondary">Không hoạt động</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            <i class="fas fa-cogs me-2"></i>
+                            Thao Tác
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <a th:href="@{/admin/categories/{id}/edit(id=${category.id})}" class="btn btn-warning">
+                                <i class="fas fa-edit me-1"></i>
+                                Chỉnh Sửa Danh Mục
+                            </a>
+                            
+                            <form th:action="@{/admin/categories/{id}/toggle(id=${category.id})}" method="post" class="d-inline">
+                                <button type="submit" 
+                                        th:class="${category.isActive} ? 'btn btn-outline-secondary w-100' : 'btn btn-outline-success w-100'">
+                                    <i th:class="${category.isActive} ? 'fas fa-toggle-off me-1' : 'fas fa-toggle-on me-1'"></i>
+                                    <span th:text="${category.isActive} ? 'Vô Hiệu Hóa' : 'Kích Hoạt'">Vô Hiệu Hóa</span>
+                                </button>
+                            </form>
+                            
+                            <a th:href="@{/admin/categories/{id}/delete(id=${category.id})}" class="btn btn-outline-danger">
+                                <i class="fas fa-trash me-1"></i>
+                                Xóa Danh Mục
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            <i class="fas fa-chart-bar me-2"></i>
+                            Thống Kê
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-6">
+                                <h4 class="text-primary" th:text="${#lists.size(category.videos)}">0</h4>
+                                <small class="text-muted">Tổng Video</small>
+                            </div>
+                            <div class="col-6">
+                                <h4 class="text-success" th:text="${#lists.size(category.videos.?[isActive == true])}">0</h4>
+                                <small class="text-muted">Video Hoạt Động</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

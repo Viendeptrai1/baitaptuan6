@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>Quản Lý Video - Admin</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2"><i class="fas fa-video me-2"></i>Quản Lý Video</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <a href="/admin/videos/new" class="btn btn-primary"><i class="fas fa-plus me-1"></i>Thêm Video</a>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" th:action="@{/admin/videos}">
+                <div class="row g-2 align-items-end">
+                    <div class="col-md-4">
+                        <label class="form-label">Từ khóa</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-search"></i></span>
+                            <input type="text" class="form-control" name="keyword" th:value="${keyword}" placeholder="Tìm tiêu đề, mô tả...">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Danh mục</label>
+                        <select name="categoryId" class="form-select">
+                            <option value="">Tất cả</option>
+                            <option th:each="c : ${categories}" th:value="${c.id}" th:text="${c.name}"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Người tạo</label>
+                        <select name="userId" class="form-select">
+                            <option value="">Tất cả</option>
+                            <option th:each="u : ${users}" th:value="${u.id}" th:text="${u.fullName}"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label d-block">&nbsp;</label>
+                        <button type="submit" class="btn btn-outline-primary w-100">Lọc</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h6 class="m-0"><i class="fas fa-list me-2"></i>Danh sách video</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Tiêu đề</th>
+                        <th>Danh mục</th>
+                        <th>Người tạo</th>
+                        <th>Views</th>
+                        <th>Likes</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="v : ${videos.content}" th:class="${v.isActive} ? '' : 'table-secondary'">
+                        <td th:text="${v.id}">1</td>
+                        <td>
+                            <a th:href="@{/admin/videos/{id}(id=${v.id})}" th:text="${v.title}" class="text-decoration-none">title</a>
+                            <div class="text-muted small" th:text="${#strings.abbreviate(v.description, 60)}">mô tả</div>
+                        </td>
+                        <td th:text="${v.category.name}">cat</td>
+                        <td th:text="${v.user.fullName}">user</td>
+                        <td th:text="${v.views}">0</td>
+                        <td th:text="${v.likes}">0</td>
+                        <td>
+                            <span th:if="${v.isActive}" class="badge bg-success">Hoạt động</span>
+                            <span th:unless="${v.isActive}" class="badge bg-secondary">Ẩn</span>
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <a th:href="@{/admin/videos/{id}/edit(id=${v.id})}" class="btn btn-sm btn-outline-warning"><i class="fas fa-edit"></i></a>
+                                <form th:action="@{/admin/videos/{id}/toggle(id=${v.id})}" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary"><i class="fas fa-toggle-on"></i></button>
+                                </form>
+                                <a th:href="@{/admin/videos/{id}/delete(id=${v.id})}" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(videos.content)}">
+                        <td colspan="8" class="text-center text-muted py-4">Không có video</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <nav th:if="${totalPages > 1}">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{/admin/videos(page=${currentPage - 1}, size=${size}, sortBy=${sortBy}, sortDir=${sortDir}, keyword=${keyword}, categoryId=${selectedCategoryId}, userId=${selectedUserId})}">&laquo;</a>
+                    </li>
+                    <li class="page-item" th:each="p : ${#numbers.sequence(0, totalPages-1)}" th:classappend="${p == currentPage} ? 'active'">
+                        <a class="page-link" th:text="${p+1}" th:href="@{/admin/videos(page=${p}, size=${size}, sortBy=${sortBy}, sortDir=${sortDir}, keyword=${keyword}, categoryId=${selectedCategoryId}, userId=${selectedUserId})}">1</a>
+                    </li>
+                    <li class="page-item" th:classappend="${currentPage == totalPages-1} ? 'disabled'">
+                        <a class="page-link" th:href="@{/admin/videos(page=${currentPage + 1}, size=${size}, sortBy=${sortBy}, sortDir=${sortDir}, keyword=${keyword}, categoryId=${selectedCategoryId}, userId=${selectedUserId})}">&raquo;</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+</body>
+</html>

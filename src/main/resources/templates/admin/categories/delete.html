@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>Xóa Danh Mục - Admin</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">
+                <i class="fas fa-trash me-2"></i>
+                Xóa Danh Mục
+            </h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <a href="/admin/categories" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-1"></i>
+                    Quay Lại
+                </a>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-danger">
+                    <div class="card-header bg-danger text-white">
+                        <h6 class="m-0 font-weight-bold">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            Xác Nhận Xóa Danh Mục
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-warning">
+                            <h6><i class="fas fa-warning me-2"></i>Cảnh báo:</h6>
+                            <p class="mb-0">Bạn có chắc chắn muốn xóa danh mục này không? Hành động này không thể hoàn tác.</p>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Thông Tin Danh Mục:</h6>
+                                <ul class="list-unstyled">
+                                    <li><strong>ID:</strong> <span th:text="${category.id}">1</span></li>
+                                    <li><strong>Tên:</strong> <span th:text="${category.name}">Tên danh mục</span></li>
+                                    <li><strong>Trạng thái:</strong> 
+                                        <span th:if="${category.isActive}" class="badge bg-success">Hoạt động</span>
+                                        <span th:unless="${category.isActive}" class="badge bg-secondary">Không hoạt động</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Thống Kê:</h6>
+                                <ul class="list-unstyled">
+                                    <li><strong>Ngày tạo:</strong> <span th:text="${#temporals.format(category.createdAt, 'dd/MM/yyyy HH:mm')}">01/01/2024 10:00</span></li>
+                                    <li><strong>Tổng video:</strong> <span th:text="${#lists.size(category.videos)}">0</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div th:if="${category.videos != null and !category.videos.isEmpty()}" class="alert alert-info">
+                            <h6><i class="fas fa-info-circle me-2"></i>Lưu ý:</h6>
+                            <p class="mb-0">Danh mục này có <strong th:text="${#lists.size(category.videos)}">0</strong> video. 
+                            Nếu bạn xóa danh mục, các video sẽ không còn thuộc danh mục nào.</p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Mô tả:</label>
+                            <div class="border rounded p-3 bg-light">
+                                <p th:text="${category.description ?: 'Không có mô tả'}" class="mb-0">Mô tả danh mục</p>
+                            </div>
+                        </div>
+
+                        <form th:action="@{/admin/categories/{id}/delete(id=${category.id})}" method="post">
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="hardDelete" name="hardDelete">
+                                <label class="form-check-label" for="hardDelete">
+                                    <strong>Xóa vĩnh viễn</strong> (không thể khôi phục)
+                                </label>
+                            </div>
+                            <div class="text-muted small mb-3">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Nếu không chọn "Xóa vĩnh viễn", danh mục sẽ chỉ bị vô hiệu hóa (soft delete).
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <a href="/admin/categories" class="btn btn-secondary">
+                                    <i class="fas fa-times me-1"></i>
+                                    Hủy
+                                </a>
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fas fa-trash me-1"></i>
+                                    Xác Nhận Xóa
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
